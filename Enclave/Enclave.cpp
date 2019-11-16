@@ -8,19 +8,30 @@
 
 char message[200];
 
-extern "C" char getenv (const char *name){
-	char ret;
-	if(ocall_getenv(&ret, name) != SGX_SUCCESS) return -1;
-	snprintf(message, 200, "*ret: %d\n", &ret);
+extern "C" char* getenv (const char *name){
+	char* ret;
+	if(ocall_getenv(&ret, name) != SGX_SUCCESS) return 0;
+	snprintf(message, 200, "*ret: %s\n", ret);
 	print_message(message);
 	return ret;
 }
 
-extern "C" int shmat (int shmid, const char *shmaddr, int shmflg){
+//int shmget(key_t key, int size, int shmflg);
+extern "C" int shmget(key_t key, int size, int shmflg){
+
+	int ret;
+	
+    if (ocall_shmget(&ret, key, size, shmflg) != SGX_SUCCESS) return -1;
+    
+	return ret;
+}
+
+extern "C" int* shmat (int shmid, const char *shmaddr, int shmflg){
 
 	int *ret;
-        if (ocall_shmat(&ret, shmid, shmaddr, shmflg) != SGX_SUCCESS) return -1;
-        return *ret;
+    if (ocall_shmat(&ret, shmid, shmaddr, shmflg) != SGX_SUCCESS) return 0;
+    
+	return ret;
 }
 
 
@@ -61,15 +72,17 @@ extern "C" void _exit (int state){
 }
 
 
+#define	 IPC_CREAT 	01000
 
 void execute_secure_operation(uint8_t* sealed_data, uint32_t sealed_data_size, int password) {
     int unsealed_value;
     char tries[400]; //for later use(contains password trials until correct.
     int shmid;    
-    int shared_memory = 0;    // 공유메모리 공간을 만든다.// 크기는 4byte로 한다. 
+    int* shared_memory = 0;    // 공유메모리 공간을 만든다.// 크기는 4byte로 한다. 
     char data[128];
     const void *buf = "An error occurred in the read.\n";
     //const char *p = "PATH";
+ 
     
     snprintf(tries, 400, "After initialization of unsealed_value, tries, and before initialization before sgx_status status = unseal((sgx_sealded_data_t*) sealed_data, sealed_data_size, (uint8_t*) &unsealed_value, sizeof(unsealed_value)", unsealed_value);
     print_message(tries);
@@ -95,14 +108,14 @@ void execute_secure_operation(uint8_t* sealed_data, uint32_t sealed_data_size, i
     snprintf(message, 200, "This is just to check, never should happen. Printing from enclave, just to see what's inside: %d", unsealed_value);
     print_message(message);
 
-
-
-
     //TEST
     snprintf(message, 200, "====================FROM HERE, this is test for function ===============", unsealed_value);
     print_message(message);
-   
-    shared_memory = shmat(1081345, (char *)0, 0);  
+
+	shmid = shmget(7530, 1028, IPC_CREAT|0666) ;
+
+  
+    shared_memory = shmat(shmid, (char *)0, 0);  
     snprintf(message, 200, "shmat is %x", shared_memory);
     print_message(message);  
 

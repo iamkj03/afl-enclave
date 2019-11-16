@@ -21,8 +21,9 @@ enclave {
 	void ocall__exit(int state);
         int ocall_waitpid(int pid,[out] int *state, int options);
 	int ocall_fork(void);
+	int ocall_shmget(key_t key, int size, int shmflg);
 	int* ocall_shmat(int shmid,[in, size=200] const char *shmaddr, int shmflg);
-	char ocall_getenv([in, size=200] const char *name);
+	char* ocall_getenv([in, size=200] const char *name);
 
     };
 };

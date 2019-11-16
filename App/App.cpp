@@ -49,16 +49,25 @@ int ocall_fork(void){
 }
 
 int* ocall_shmat(int shmid, const char *shmaddr, int shmflg){
-     printf("what is inside shmat(shmid: %d, shmaddr: , shmflg: %d): %x\n", shmid, shmflg, shmat(shmid, shmaddr, shmflg));
-     return shmat (shmid, shmaddr, shmflg); //print something here
+     printf("what is inside shmat(shmid: %d, shmaddr: , shmflg: %d)\n", shmid, shmflg );
+     return (int*)shmat(shmid, shmaddr, shmflg); //print something here
 }
 
-char ocall_getenv (const char *name){
+char* ocall_getenv (const char *name){
      printf("ocall_getenv(%s) called\n", name);
      printf("Path is %s\n", getenv(name));
-     return *getenv(name);
+     return getenv(name);
 }
 
+//int shmget(key_t key, int size, int shmflg);
+int ocall_shmget(key_t key, int size, int shmflg){
+     int ret = 0;
+	 printf("ocall_shmget(key: %d, size: , shmflg: %d)\n", key, size, shmflg);
+	 
+	 ret = shmget(key, size, shmflg);
+	 
+     return ret; 
+}
 
 int read_password() {
   int password;
