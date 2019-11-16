@@ -1,0 +1,28 @@
+enclave {
+    from "Sealing/Sealing.edl" import *;
+
+    trusted {
+        /* define ECALLs here. ECALLS are calls executed from outside of the enclave, which should be performed inside the enclave */
+
+        public void execute_secure_operation([in, out, size=sealed_data_size]
+            uint8_t* sealed_data, uint32_t sealed_data_size, int password);
+
+        public void initialize_enclave_data([out, size=sealed_data_size]
+            uint8_t* sealed_data, uint32_t sealed_data_size, int initial_value);
+    };
+
+    untrusted {
+        /* define OCALLs here. OCALLs are executed from within enclave on insecure methods, that is
+           methods located outside the enclave. */
+        void print_message([in, string] const char* str);
+        int ocall_read(int file, [out, size=size] void *buf, unsigned int size);
+        int ocall_write(int file, [in, size=size] void *buf, unsigned int size);
+        void ocall_close(int file);
+	void ocall__exit(int state);
+        int ocall_waitpid(int pid,[out] int *state, int options);
+	int ocall_fork(void);
+	int* ocall_shmat(int shmid,[in, size=200] const char *shmaddr, int shmflg);
+	char ocall_getenv([in, size=200] const char *name);
+
+    };
+};
