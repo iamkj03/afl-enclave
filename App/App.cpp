@@ -60,11 +60,11 @@ char* ocall_getenv (const char *name){
 }
 
 //int shmget(key_t key, int size, int shmflg);
-int ocall_shmget(key_t key, int size, int shmflg){
+int ocall_shmget(int key, int size, int shmflg){
      int ret = 0;
 	 printf("ocall_shmget(key: %d, size: , shmflg: %d)\n", key, size, shmflg);
 	 
-	 ret = shmget(key, size, shmflg);
+	 ret = shmget((key_t)key, size, shmflg);
 	 
      return ret; 
 }

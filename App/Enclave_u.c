@@ -68,7 +68,7 @@ typedef struct ms_ocall_fork_t {
 
 typedef struct ms_ocall_shmget_t {
 	int ms_retval;
-	key_t ms_key;
+	int ms_key;
 	int ms_size;
 	int ms_shmflg;
 } ms_ocall_shmget_t;

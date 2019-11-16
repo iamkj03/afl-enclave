@@ -94,7 +94,7 @@ typedef struct ms_ocall_fork_t {
 
 typedef struct ms_ocall_shmget_t {
 	int ms_retval;
-	key_t ms_key;
+	int ms_key;
 	int ms_size;
 	int ms_shmflg;
 } ms_ocall_shmget_t;
@@ -663,7 +663,7 @@ sgx_status_t SGX_CDECL ocall_fork(int* retval)
 	return status;
 }
 
-sgx_status_t SGX_CDECL ocall_shmget(int* retval, key_t key, int size, int shmflg)
+sgx_status_t SGX_CDECL ocall_shmget(int* retval, int key, int size, int shmflg)
 {
 	sgx_status_t status = SGX_SUCCESS;
 

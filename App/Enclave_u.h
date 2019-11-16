@@ -47,7 +47,7 @@ int SGX_UBRIDGE(SGX_NOCONVENTION, ocall_fork, (void));
 #endif
 #ifndef OCALL_SHMGET_DEFINED__
 #define OCALL_SHMGET_DEFINED__
-int SGX_UBRIDGE(SGX_NOCONVENTION, ocall_shmget, (key_t key, int size, int shmflg));
+int SGX_UBRIDGE(SGX_NOCONVENTION, ocall_shmget, (int key, int size, int shmflg));
 #endif
 #ifndef OCALL_SHMAT_DEFINED__
 #define OCALL_SHMAT_DEFINED__

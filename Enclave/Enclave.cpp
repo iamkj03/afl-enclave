@@ -17,7 +17,7 @@ extern "C" char* getenv (const char *name){
 }
 
 //int shmget(key_t key, int size, int shmflg);
-extern "C" int shmget(key_t key, int size, int shmflg){
+extern "C" int shmget(int key, int size, int shmflg){
 
 	int ret;
 	
@@ -118,6 +118,11 @@ void execute_secure_operation(uint8_t* sealed_data, uint32_t sealed_data_size, i
     shared_memory = shmat(shmid, (char *)0, 0);  
     snprintf(message, 200, "shmat is %x", shared_memory);
     print_message(message);  
+	*shared_memory = 111;
+	
+    snprintf(message, 200, "*shared_memory : %d",*shared_memory);
+    print_message(message);
+	
 
     /*if(read(0, data, 128)>0){
        snprintf(message, 200, "read(0, data, 128) is %d", read(0,data,128));

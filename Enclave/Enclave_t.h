@@ -12,8 +12,6 @@
 
 #define SGX_CAST(type, item) ((type)(item))
 
-typedef int key_t;
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -30,7 +28,7 @@ sgx_status_t SGX_CDECL ocall_close(int file);
 sgx_status_t SGX_CDECL ocall__exit(int state);
 sgx_status_t SGX_CDECL ocall_waitpid(int* retval, int pid, int* state, int options);
 sgx_status_t SGX_CDECL ocall_fork(int* retval);
-sgx_status_t SGX_CDECL ocall_shmget(int* retval, key_t key, int size, int shmflg);
+sgx_status_t SGX_CDECL ocall_shmget(int* retval, int key, int size, int shmflg);
 sgx_status_t SGX_CDECL ocall_shmat(int** retval, int shmid, const char* shmaddr, int shmflg);
 sgx_status_t SGX_CDECL ocall_getenv(char** retval, const char* name);
 
